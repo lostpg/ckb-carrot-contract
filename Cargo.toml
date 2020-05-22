@@ -1,13 +1,14 @@
 [package]
-name = "ckb-carrot"
+name = "play-args"
 version = "0.1.0"
-authors = ["lujw@720s <lu.jw@outlook.com>"]
+authors = ["lujw <lu.jw@outlook.com>"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
-ckb-std = "0.1.6"
+ckb-std = "0.2.1"
+# Use a crate of godwoken for data (de)serialization in Molecule encoding.
+godwoken-types = { path = "../../godwoken/types", default-features = false }
 
 [profile.release]
 lto = true

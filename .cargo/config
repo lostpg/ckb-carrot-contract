@@ -1,2 +1,9 @@
 [build]
 target = "riscv64imac-unknown-none-elf"
+rustflags = "-C link-arg=-s"
+
+[source.crates-io]
+replace-with = "ustc"
+
+[source.ustc]
+registry = "git://mirrors.ustc.edu.cn/crates.io-index"

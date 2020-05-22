@@ -4,21 +4,45 @@
 #![feature(alloc_error_handler)]
 #![feature(panic_info_message)]
 
-use ckb_std::{ckb_constants, debug, default_alloc, entry, syscalls};
+use alloc::vec::Vec;
+use ckb_std::{
+    ckb_constants::{CellField, Source, SysError},
+    debug, default_alloc, entry,
+    syscalls::load_cell_by_field,
+};
+use godwoken_types::{packed::*, prelude::*};
 
 #[no_mangle]
 pub fn main() -> i8 {
     let mut index = 0;
-    let len = 6;
+    const LEN: usize = 1024;
     let offset = 0;
-    debug!("Let's see if you are carrying carrots.");
-    while let Ok(buf) =
-        syscalls::load_cell_data(len, offset, index, ckb_constants::Source::GroupOutput)
-    {
-        let buffer = buf;
-        if buffer.starts_with("carrot".as_bytes()) {
-            debug!("No!!! You have a carrot!");
-            return -1;
+    let mut buf = [0u8; LEN];
+    loop {
+        match load_cell_by_field(
+            &mut buf,
+            offset,
+            index,
+            Source::GroupOutput,
+            CellField::Type,
+        ) {
+            Ok(len) => {
+                debug!("Cell {}, returns len: {}", index, len);
+                debug!("{:?}", &buf[..len]);
+                let type_script = Script::new_unchecked(buf[..len].into());
+                let args: Vec<u8> = type_script.args().unpack();
+                debug!("Cell {}, args: {:?}", index, args);
+                if args.starts_with(b"carrot") {
+                    debug!("Got the carrot!");
+                    return -1;
+                }
+            }
+            Err(err) => {
+                debug!("Failed to invoke syscall: {:?}", err);
+                if err == SysError::IndexOutOfBound {
+                    break;
+                }
+            }
         }
         index += 1;
     }
