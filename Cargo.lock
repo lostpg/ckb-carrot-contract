@@ -7,17 +7,46 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "eddd1222019887eefb9b732d081d02171b4f4932e8d221b482b43f74a9ba6346"
 
 [[package]]
-name = "ckb-carrot"
-version = "0.1.0"
-dependencies = [
- "ckb-std",
-]
+name = "cc"
+version = "1.0.54"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7bbb73db36c1246e9034e307d0fba23f9a2e251faa47ade70c1bd252220c8311"
+
+[[package]]
+name = "cfg-if"
+version = "0.1.10"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4785bdd1c96b2a846b2bd7cc02e86b6b3dbf14e7e53446c4f54c92a361040822"
 
 [[package]]
 name = "ckb-std"
-version = "0.1.6"
+version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "10525137ddabdde3ae8ba93441b0551bbb4addaf744f0d4e761bc8ff4b8c7fc3"
+checksum = "fc2e4d1756e4347b58f130287ef6b0471d1c42e87fbf97fc4bc70298ad6d6b44"
 dependencies = [
  "buddy-alloc",
+ "cc",
+]
+
+[[package]]
+name = "godwoken-types"
+version = "0.1.0-pre"
+dependencies = [
+ "cfg-if",
+ "molecule",
+]
+
+[[package]]
+name = "molecule"
+version = "0.4.0"
+dependencies = [
+ "cfg-if",
+]
+
+[[package]]
+name = "play-args"
+version = "0.1.0"
+dependencies = [
+ "ckb-std",
+ "godwoken-types",
 ]
